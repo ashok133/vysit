@@ -45,18 +45,30 @@ var apiCallerApp = new Vue({
 		},
 	  methods: {
 			mapper(plot_lat, plot_lng, description) {
+        var location = new google.maps.LatLng(plot_lat,plot_lng);
+        var testLocation = {lat: 17.74234, lng: 45.2378};
 				var mapProp= {
-				    center:new google.maps.LatLng(plot_lat,plot_lng),
+				    center: location,
 				    zoom:6,
 				};
 
 				var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+        var panorama = new google.maps.StreetViewPanorama(
+          document.getElementById('pano'), {
+            position: location,
+            pov: {
+              heading: 34,
+              pitch: 10
+            }
+          });
+      map.setStreetView(panorama);
 
 				var marker = new google.maps.Marker({
           position: new google.maps.LatLng(plot_lat,plot_lng),
           map: map,
           title: description
         });
+
 			},
 			plotResult() {
 				plot_lat = 0.0;

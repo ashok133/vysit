@@ -29,6 +29,12 @@ h5, h3 {
   z-index: -3; /* Set z-index to 0 as it will be on a layer below the contact form */
 }
 
+
+#image-card {
+  /* height: 100%; */
+  width: 40%;
+}
+
 .about-card {
   background-color: #ffffff;
   padding: 40px;
