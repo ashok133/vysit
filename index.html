@@ -1,0 +1,97 @@
+<html>
+<head>
+  <title>vyzit</title>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/styler.css">
+
+  <!-- Materialise CSS -->
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <!-- Compiled and minified JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+  <!-- vue js -->
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+  <!-- firebase -->
+  <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+
+</head>
+<body>
+
+  <img src="images/index-bg.jpg" id="bg" alt="">
+
+    <div class="container">
+      <div class="about-card">
+
+      <div class="row">
+        <h3 id="hello">Welcome</h3>
+        <h6>Google Cloud Vision married Maps and gave birth to what you're seeing right now.</h6>
+        <!-- <div class="col s12 m5 l11">
+          <div class="card-panel teal">
+            <span class="white-text">Google Cloud Vision married Maps and gave birth to what you're seeing right now.
+            </span>
+          </div>
+        </div> -->
+      </div>
+
+
+
+      <div id="apiCallerDiv">
+        <h5>Step 1: Choose an image</h5>
+
+        <p id="src-b64"></p>
+
+
+          <div class="col s12 m6">
+            <div class = "file-field input-field">
+             <div style="background: #664e96;" class = "btn">
+                <span>Browse</span>
+                <input type = "file" id="src-img"/>
+             </div>
+
+              <div class = "file-path-wrapper">
+                <input class = "file-path validate" type = "text" placeholder = "Upload image" />
+              </div>
+            </div>
+          </div>
+
+
+        <div id="image-card" class="row">
+          <div class="col s12 m6">
+            <div class="card">
+              <div class="card-image">
+                <img id="src-decoded" src="images/sample.jpg" >
+                <span class="card-title"></span>
+              </div>
+              <div class="card-content">
+                <p>{{response.responses[0].landmarkAnnotations[0].description}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <br>
+      © 2018 <a href="#">Vysit LLP</a>.
+    </div>
+
+  <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyBkjv3I3fuLzyvEmlwqZDV4LFiQTmo_lC0",
+      authDomain: "esoteric-source-220418.firebaseapp.com",
+      databaseURL: "https://esoteric-source-220418.firebaseio.com",
+      projectId: "esoteric-source-220418",
+      storageBucket: "esoteric-source-220418.appspot.com",
+      messagingSenderId: "55437313763"
+    };
+    firebase.initializeApp(config);
+  </script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWZ2IDESUpL3pF9dx73FO_vOy3JF7a2AY"></script>
+  <script type="text/javascript" src="js/apiCaller.js"></script>
+
+</body>
+</html>
