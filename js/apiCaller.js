@@ -181,6 +181,7 @@ var apiCallerApp = new Vue({
 				const ref = database.ref('similarImagesQueries');
 				const fb_result = ref.push({
 					//TODO: push similar images data
+          
 				})
 				console.log("RDB instance key: ",fb_result.key);
 			},
