@@ -167,7 +167,7 @@ var apiCallerApp = new Vue({
 			pushLandmarkData(json) {
 				const database = firebase.database();
 				const ref = database.ref('landmarkQueries');
-        var session_email = apiCallerApp.sessionChecker;
+        var session_email = apiCallerApp.sessionChecker();
 				const fb_result = ref.push({
           query_email: session_email,
 					query_mid: json.responses[0].landmarkAnnotations[0].mid,
@@ -181,7 +181,7 @@ var apiCallerApp = new Vue({
       pushSimilarImagesData(json) {
 				const database = firebase.database();
 				const ref = database.ref('similarImagesQueries');
-        var session_email = apiCallerApp.sessionChecker;
+        var session_email = apiCallerApp.sessionChecker();
 				const fb_result = ref.push({
 					//TODO: push similar images data
           query_email: session_email,
