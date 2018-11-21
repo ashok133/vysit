@@ -1,5 +1,8 @@
 var apiCallerApp = new Vue({
 	el: '#apiCallerDiv',
+  mounted: function(){
+    apiCallerApp.sessionChecker();
+  },
 	data : {
 		landmark_response: {
 			responses: [
@@ -181,7 +184,7 @@ var apiCallerApp = new Vue({
 				const ref = database.ref('similarImagesQueries');
 				const fb_result = ref.push({
 					//TODO: push similar images data
-          
+
 				})
 				console.log("RDB instance key: ",fb_result.key);
 			},
@@ -266,6 +269,10 @@ var apiCallerApp = new Vue({
 			},
       openImage(url) {
         window.open(url,'Image','width=50px,resizable=1');
+      },
+      sessionChecker() {
+        var session_email = document.cookie.match('(^|;)\\s*' + test_cookie + '\\s*=\\s*([^;]+)');
+        console.log(session_email ? session_email.pop() : '');
       }
 	  }
 	})

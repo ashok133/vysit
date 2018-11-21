@@ -1,3 +1,5 @@
+document.cookie = "test_cookie=test_val; path=/";
+
 function onSignIn(googleUser) {
   var profile = googleUser.getBasicProfile();
   var email = profile.getEmail();
