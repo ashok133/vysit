@@ -108,7 +108,8 @@ var apiCallerApp = new Vue({
               pitch: 10
             }
           });
-      map.setStreetView(panorama);
+
+				map.setStreetView(panorama);
 
 				var marker = new google.maps.Marker({
           position: new google.maps.LatLng(plot_lat,plot_lng),
@@ -123,7 +124,7 @@ var apiCallerApp = new Vue({
 				var map = document.getElementById('googleMap');
 				map.style.visibility = 'visible';
 				const database = firebase.database();
-				const ref = database.ref('queries');
+				const ref = database.ref('landmarkQueries');
 				ref.limitToLast(1).once('child_added', function (snapshot) {
 					apiCallerApp.mapper(snapshot.val().query_lat, snapshot.val().query_lng, snapshot.val().description);
   			});
@@ -132,18 +133,76 @@ var apiCallerApp = new Vue({
 				console.log('reached memories');
 				var memoryLats = [];
 				var memoryLngs = [];
+				var memoryPlaces = [];
 				var map = document.getElementById('googleMap');
 				map.style.visibility = 'visible';
+				// reference: https://firebase.google.com/docs/reference/js/firebase.database.DataSnapshot#forEach
 				const database = firebase.database();
-				const ref = database.ref('queries');
-				ref.limitToLast(5).once('value', function (snapshot) {
+				const ref = database.ref('landmarkQueries').orderByKey();
+				ref.once('value')
+					.then(function(snapshot){
 						snapshot.forEach(function(childSnapshot) {
-							console.log("FALALALALALA"+child_added.val().query_lat);
-			    	memoryLats.push(child_added.val().query_lat);
-						memoryLngs.push(child_added.val().query_lng);
+							console.log(childSnapshot.val().query_lat);
+							memoryLats.push(childSnapshot.val().query_lat);
+							memoryLngs.push(childSnapshot.val().query_lng);
+							memoryPlaces.push(childSnapshot.val().query_text);
+							// console.log(memoryLats.toString());
+						})
+						apiCallerApp.plotMemories(memoryLats, memoryLngs, memoryPlaces);
+					})
+			},
+			plotMemories(memoryLats, memoryLngs, memoryPlaces) {
+				var location = new google.maps.LatLng(memoryLats[0],memoryLngs[0]);
+				var markerFileUrl = "js/Ripple.svg";
+        // var testLocation = {lat: 17.74234, lng: 45.2378};
+				var mapProp= {
+				    center: location,
+				    zoom:2,
+						mapTypeId: google.maps.MapTypeId.ROADMAP
+				};
+
+				var icon = {
+					url: markerFileUrl, // url
+					scaledSize: new google.maps.Size(200, 200), // scaled size
+					origin: new google.maps.Point(0,0), // origin
+					anchor: new google.maps.Point(100,100) // anchor
+				};
+
+				var infoWindow = new google.maps.InfoWindow();
+
+				var map = new google.maps.Map(document.getElementById("memoriesMap"),mapProp);
+
+				for (var i=0; i<memoryPlaces.length; i++) {
+					var marker = new google.maps.Marker({
+						position: new google.maps.LatLng(memoryLats[i], memoryLngs[i]),
+						icon: 'images/marker.png',
+						// animation: google.maps.Animation.DROP,
+						icon: icon,
+						map: map
 					});
-					// apiCallerApp.mapper(snapshot.val().query_lat, snapshot.val().query_lng, snapshot.val().description);
-  			});
+					google.maps.event.addListener(marker, 'click', (function(marker, i){
+						return function(){
+							infoWindow.setContent("<a href=\"https://www.google.com/search?q="+memoryPlaces[i]+"\" target=\"_blank\">"+memoryPlaces[i]+"</a>");
+							infoWindow.open(map, marker);
+						}
+					})(marker, i));
+				}
+				for (var i=0; i<memoryPlaces.length; i++) {
+					var marker = new google.maps.Marker({
+						position: new google.maps.LatLng(memoryLats[i], memoryLngs[i]),
+						// icon: 'images/marker2.png',
+						animation: google.maps.Animation.DROP,
+						// icon: icon,
+						map: map
+					});
+					google.maps.event.addListener(marker, 'click', (function(marker, i){
+						return function(){
+							infoWindow.setContent("<a href=\"https://www.google.com/search?q="+memoryPlaces[i]+"\" target=\"_blank\">"+memoryPlaces[i]+"</a>");
+							infoWindow.open(map, marker);
+						}
+					})(marker, i));
+				}
+
 			},
       detectLandmark() {
 				// document.getElementById('image-card').style.visibility = 'visible';
