@@ -1,7 +1,7 @@
 var apiCallerApp = new Vue({
 	el: '#apiCallerDiv',
-  mounted: function(){
-    apiCallerApp.sessionChecker();
+  mounted: {
+    this.sessionChecker();
   },
 	data : {
 		landmark_response: {
