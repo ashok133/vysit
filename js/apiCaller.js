@@ -183,8 +183,8 @@ var apiCallerApp = new Vue({
 				const fb_result = ref.push({
 					//TODO: push similar images data
           query_email: apiCallerApp.sessionChecker,
-          query_entity_ids; json.responses[0].webDetection.webEntities,
-          query_best_guess_label; json.responses[0].webDetection.bestGuessLabels[0].label
+          query_entity_ids: json.responses[0].webDetection.webEntities,
+          query_best_guess_label: json.responses[0].webDetection.bestGuessLabels[0].label
 				})
 				console.log("RDB instance key: ",fb_result.key);
 			},
