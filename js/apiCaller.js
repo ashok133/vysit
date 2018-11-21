@@ -271,7 +271,7 @@ var apiCallerApp = new Vue({
         window.open(url,'Image','width=50px,resizable=1');
       },
       sessionChecker() {
-        var session_email = document.cookie.match('(^|;)\\s*' + test_cookie + '\\s*=\\s*([^;]+)');
+        var session_email = document.cookie.match('(^|;)\\s*' + saved_session_email + '\\s*=\\s*([^;]+)');
         console.log(session_email ? session_email.pop() : '');
         return session_email ? session_email.pop() : ''
       }
