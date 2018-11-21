@@ -27,8 +27,8 @@
         <div class="about-card">
 
         <div class="row">
-          <h3 id="hello">Welcome</h3>
-          <h6>Google Cloud Vision married Maps and gave birth to what you're seeing right now.</h6>
+          <h3 id="hello">Finding similar photos</h3>
+          <!-- <h6>Google Cloud Vision married Maps and gave birth to what you're seeing right now.</h6> -->
           <!-- <div class="col s12 m5 l11">
             <div class="card-panel teal">
               <span class="white-text">Google Cloud Vision married Maps and gave birth to what you're seeing right now.
@@ -67,22 +67,22 @@
                   <span class="card-title"></span>
                 </div>
                 <div class="card-content">
-                  <p>{{landmark_response.responses[0].landmarkAnnotations[0].description}}</p>
+                  <p>{{similarity_response.responses[0].webDetection.bestGuessLabels[0].label}}</p>
                 </div>
               </div>
             </div>
           </div>
           <!-- <h6>India Gate</h6> -->
 
-          <h5>Step 2: Hit 'Detect' to identify the place</h5>
+          <h5>Step 2: Hit 'Find Similar Images' to identify the place</h5>
 
-          <button style="background: #664e96;" type="button" class="btn btn-secondary" @click="detectLandmark">detect</button>
+          <button style="background: #664e96;" type="button" class="btn btn-secondary" @click="detectSimilarImages">find imilar images</button>
            <!-- <a class="waves-effect waves-teal btn-flat" style="color: #00897B;">Button</a> -->
 
           <br>
           <br>
 
-          <div v-if="landmark_response">
+          <div v-if="similarity_response">
             <h5>Step 3: Hit 'Show Map' to locate it on the map</h5>
 
             <button style="background: #664e96;" type="button" class="btn btn-secondary" @click="plotResult">Show map</button>

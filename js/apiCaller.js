@@ -1,7 +1,7 @@
 var apiCallerApp = new Vue({
 	el: '#apiCallerDiv',
 	data : {
-		response: {
+		landmark_response: {
 			responses: [
 			{
 					landmarkAnnotations: [
@@ -41,6 +41,38 @@ var apiCallerApp = new Vue({
 								]
 						}
 				]
+      },
+      similarity_response: {
+        responses: [
+          {
+            webDetection: {
+              webEntities: [
+                {
+                  entityId: '',
+                  score: 0,
+                  description: ''
+                },
+              ],
+              partialMatchingImages: [
+                {
+                  url: '',
+                  score: 0
+                },
+              ],
+              pagesWithMatchingImages: [
+                {
+                  url: '',
+                  score: 0
+                },
+              ],
+              bestGuessLabels: [
+                {
+                  label: ''
+                }
+              ]
+            }
+          }
+        ]
       }
 		},
 	  methods: {
@@ -81,14 +113,14 @@ var apiCallerApp = new Vue({
 					apiCallerApp.mapper(snapshot.val().query_lat, snapshot.val().query_lng, snapshot.val().description);
   			});
 			},
-      encodeData() {
+      detectLandmark() {
 				// document.getElementById('image-card').style.visibility = 'visible';
         var files = document.getElementById('src-img').files;
         if (files.length > 0) {
           var reader = new FileReader();
           reader.readAsDataURL(files[0]);
           reader.onload = function () {
-            apiCallerApp.fetchDetectionResults(reader.result.split(',')[1]);
+            apiCallerApp.fetchLandmarkResults(reader.result.split(',')[1]);
 						var output = document.getElementById('src-decoded');
 						output.style.visibility = 'visible';
       			output.src = reader.result;
@@ -103,9 +135,32 @@ var apiCallerApp = new Vue({
           console.error('Couldn\'t upload the file');
 				}
       },
-			pushData(json) {
+      detectSimilarImages() {
+				// document.getElementById('image-card').style.visibility = 'visible';
+        var files = document.getElementById('src-img').files;
+        if (files.length > 0) {
+          var reader = new FileReader();
+          reader.readAsDataURL(files[0]);
+          reader.onload = function () {
+            apiCallerApp.fetchSimilarImageResults(reader.result.split(',')[1]);
+						var output = document.getElementById('src-decoded');
+						output.style.visibility = 'visible';
+      			output.src = reader.result;
+            // console.log("sadjahgsdagsdgahsdgahdgs",reader.result.split(',')[1]);
+          };
+					// reader.readAsDataURL(event.target.files[0]);
+          reader.onerror = function (error) {
+            console.log('Error: ', error);
+          };
+        }
+        else {
+          console.error('Couldn\'t upload the file');
+				}
+      },
+
+			pushLandmarkData(json) {
 				const database = firebase.database();
-				const ref = database.ref('queries');
+				const ref = database.ref('landmarkQueries');
 				const fb_result = ref.push({
 					query_mid: json.responses[0].landmarkAnnotations[0].mid,
 					query_text: json.responses[0].landmarkAnnotations[0].description,
@@ -115,7 +170,15 @@ var apiCallerApp = new Vue({
 				})
 				console.log("RDB instance key: ",fb_result.key);
 			},
-			fetchDetectionResults(src_b64) {
+      pushSimilarImagesData(json) {
+				const database = firebase.database();
+				const ref = database.ref('similarImagesQueries');
+				const fb_result = ref.push({
+					//TODO: push similar images data
+				})
+				console.log("RDB instance key: ",fb_result.key);
+			},
+			fetchLandmarkResults(src_b64) {
 				fetch('https://vision.googleapis.com/v1/images:annotate?key=AIzaSyAdxg74BGS4CF4-VNCNp9fhqrMR_8FzeFQ', {
 					body : JSON.stringify({
     				requests : [
@@ -145,10 +208,50 @@ var apiCallerApp = new Vue({
       	})
 					.then (json => {
 					 	// console.log(json.responses[0].landmarkAnnotations[0].mid)
- 						apiCallerApp.response = json;
+ 						apiCallerApp.landmark_response = json;
  						// console.log(apiCallerApp.response);
 						// document.getElementById("plotButton").style.visibility = "visible";
-						apiCallerApp.pushData(json)
+						apiCallerApp.pushLandmarkData(json)
+ 				})
+  			.catch( function(err){
+  				console.log(err)
+  			})
+			},
+      fetchSimilarImageResults(src_b64) {
+				fetch('https://vision.googleapis.com/v1/images:annotate?key=AIzaSyAdxg74BGS4CF4-VNCNp9fhqrMR_8FzeFQ', {
+					body : JSON.stringify({
+    				requests : [
+                {
+                  image: {
+                    content: src_b64
+                  },
+                  features: [
+                    {
+                      type: "WEB_DETECTION",
+                      maxResults: 10
+                      }
+                    ]
+                  }
+                ]
+  				    }),
+					     mode: "cors", // no-cors, cors, *same-origin
+					     headers: {
+    				    'Accept': 'application/json, text/plain, */*',
+    				    'Content-Type': 'application/json; charset=utf-8'
+  				    },
+					     method: "POST"
+				    }
+			   )
+				 .then((res) => {
+        return res.json();
+      	})
+					.then (json => {
+					 	// console.log(json.responses[0].landmarkAnnotations[0].mid)
+            console.log(json);
+ 						apiCallerApp.similarity_response = json;
+ 						// console.log(apiCallerApp.response);
+						// document.getElementById("plotButton").style.visibility = "visible";
+						// apiCallerApp.pushSimilarImagesData(json)
  				})
   			.catch( function(err){
   				console.log(err)
