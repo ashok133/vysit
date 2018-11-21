@@ -3,7 +3,7 @@
 function onSignIn(googleUser) {
   var profile = googleUser.getBasicProfile();
   var email = profile.getEmail();
-  document.getElementById('profileInfo').innerHTML = "Welcome" + profile.getName();
+  document.getElementById('profileInfo').innerHTML = "Welcome " + profile.getName();
   saveSession(email);
 }
 
