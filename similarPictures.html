@@ -5,6 +5,10 @@
   <!-- Custom CSS -->
   <link rel="stylesheet" href="css/styler.css">
 
+  <!-- jquery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
   <!-- Materialise CSS -->
   <!-- Compiled and minified CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
@@ -22,6 +26,16 @@
 </head>
 <body>
 
+  <div class="fixed-action-btn">
+    <a class="btn-floating btn-large red">
+      <i class="large material-icons">menu</i>
+    </a>
+    <ul>
+      <li><a class="btn-floating red" href="index.html"><i class="material-icons">home</i></a></li>
+      <li><a class="btn-floating yellow darken-1"><i class="material-icons">location_on</i></a></li>
+      <li><a class="btn-floating green"><i class="material-icons">blur_on</i></a></li>
+    </ul>
+  </div>
 
     <img src="images/index-bg.jpg" id="bg" alt="">
 
@@ -74,8 +88,8 @@
               </div>
             </div>
             <div class="col s6 m6">
-              <h5>Image tags</h5>
               <div class="card-panel" v-if="similarity_response">
+                <h5>Image tags</h5>
                 <!-- <p class="white-text">sdads</p> -->
                 <div class="chip" v-for="item in similarity_response.responses[0].webDetection.webEntities">
                   {{item.description}}<i class="close material-icons">close</i>
@@ -104,6 +118,16 @@
               </div>
             </div>
           </div>
+
+          <br>
+
+          <h5>Articles that you might like</h5>
+          <div v-if="similarity_response">
+            <div v-for="item in similarity_response.responses[0].webDetection.pagesWithMatchingImages">
+              <a :href='item.url' target="_blank">- {{item.url}}</a>
+            </div>
+          </div>
+
         </div>
         <br>
       <br>
@@ -125,6 +149,9 @@
   </script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWZ2IDESUpL3pF9dx73FO_vOy3JF7a2AY"></script>
   <script type="text/javascript" src="js/apiCaller.js"></script>
-
+  <script>
+  $(document).ready(function(){
+    $('.fixed-action-btn').floatingActionButton();
+  });</script>
 </body>
 </html>
