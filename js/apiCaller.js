@@ -167,8 +167,9 @@ var apiCallerApp = new Vue({
 			pushLandmarkData(json) {
 				const database = firebase.database();
 				const ref = database.ref('landmarkQueries');
+        var session_email = apiCallerApp.sessionChecker;
 				const fb_result = ref.push({
-          query_email: apiCallerApp.sessionChecker,
+          query_email: session_email,
 					query_mid: json.responses[0].landmarkAnnotations[0].mid,
 					query_text: json.responses[0].landmarkAnnotations[0].description,
 					query_lat: json.responses[0].landmarkAnnotations[0].locations[0].latLng.latitude,
@@ -180,9 +181,10 @@ var apiCallerApp = new Vue({
       pushSimilarImagesData(json) {
 				const database = firebase.database();
 				const ref = database.ref('similarImagesQueries');
+        var session_email = apiCallerApp.sessionChecker;
 				const fb_result = ref.push({
 					//TODO: push similar images data
-          query_email: apiCallerApp.sessionChecker,
+          query_email: session_email,
           query_entity_ids: json.responses[0].webDetection.webEntities,
           query_best_guess_label: json.responses[0].webDetection.bestGuessLabels[0].label
 				})
