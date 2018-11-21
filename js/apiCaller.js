@@ -281,5 +281,6 @@ var apiCallerApp = new Vue({
 	  },
     created: function() {
       var session_email = this.sessionChecker();
+      console.log(session_email);
     }
 	})
