@@ -168,12 +168,12 @@ var apiCallerApp = new Vue({
 				const database = firebase.database();
 				const ref = database.ref('landmarkQueries');
 				const fb_result = ref.push({
-          query_email: apiCallerApp.sessionChecker;
+          query_email: apiCallerApp.sessionChecker,
 					query_mid: json.responses[0].landmarkAnnotations[0].mid,
 					query_text: json.responses[0].landmarkAnnotations[0].description,
 					query_lat: json.responses[0].landmarkAnnotations[0].locations[0].latLng.latitude,
 					query_lng: json.responses[0].landmarkAnnotations[0].locations[0].latLng.longitude,
-					query_conf: json.responses[0].landmarkAnnotations[0].score,
+					query_conf: json.responses[0].landmarkAnnotations[0].score
 				})
 				console.log("RDB instance key: ",fb_result.key);
 			},
@@ -182,9 +182,9 @@ var apiCallerApp = new Vue({
 				const ref = database.ref('similarImagesQueries');
 				const fb_result = ref.push({
 					//TODO: push similar images data
-          query_email: apiCallerApp.sessionChecker;
-          query_entity_ids; json.responses[0].webDetection.webEntities;
-          query_best_guess_label; json.responses[0].webDetection.bestGuessLabels[0].label;
+          query_email: apiCallerApp.sessionChecker,
+          query_entity_ids; json.responses[0].webDetection.webEntities,
+          query_best_guess_label; json.responses[0].webDetection.bestGuessLabels[0].label
 				})
 				console.log("RDB instance key: ",fb_result.key);
 			},
