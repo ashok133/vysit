@@ -4,6 +4,7 @@ function onSignIn(googleUser) {
   var profile = googleUser.getBasicProfile();
   var email = profile.getEmail();
   document.getElementById('profileInfo').innerHTML = "Welcome " + profile.getName();
+  document.getElementById('signOutButton').style.visibility = 'visible';
   saveSession(email);
 }
 
@@ -11,6 +12,7 @@ function signOut() {
   var auth2 = gapi.auth2.getAuthInstance();
   auth2.signOut().then(function() {
     document.getElementById('profileInfo').innerHTML = '';
+    document.getElementById('signOutButton').style.visibility = 'hidden';
   })
 }
 

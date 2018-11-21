@@ -29,8 +29,8 @@
 <body>
 
   <div class="fixed-action-btn">
-    <a class="btn-floating btn-large red">
-      <i class="large material-icons">menu</i>
+    <a class="btn-floating btn-large white">
+      <i class="large material-icons" style="color: black;">menu</i>
     </a>
     <ul>
       <li><a class="btn-floating red" href="index.html"><i class="material-icons">home</i></a></li>
@@ -68,8 +68,14 @@
 
 					<br>
 					<!-- <a href="#" onclick="signOut();">Sign Out</a> -->
-					<div class="g-signin2" data-onsuccess="onSignIn"></div>
-					<button class="btn blue" onclick="signOut();">Sign Out</button>
+					<div class="row">
+						<div class="col s2 m2 l2">
+							<div class="g-signin2" data-onsuccess="onSignIn"></div>
+						</div>
+						<div class="col s2 m2 l2">
+						<button hidden id="signOutButton" class="btn blue" onclick="signOut();">Sign Out</button>
+						</div>
+					</div>
 
 					<br><br><br>
 
