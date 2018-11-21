@@ -1,0 +1,24 @@
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<meta name="google-signin-client_id" content="55437313763-6mi03rt5oe1hae9v791t0vup40n2ge9c.apps.googleusercontent.com">
+	<title>Vysit | Login</title>
+	<script src="https://apis.google.com/js/platform.js" async defer></script>
+</head>
+<body>
+	<div id="profileInfo"></div>
+	<div class="g-signin2" data-onsuccess="onSignIn"></div>
+	<a href="#" onclick="signOut();">Sign Out</a>
+	<script>
+		function onSignIn(googleUser) {
+			var profile = googleUser.getBasicProfile();
+			document.getElementById('profileInfo').innerHTML = profile.getName();
+		}
+		function signOut() {
+			var auth2 = gapi.auth2.getAuthInstance();
+			auth2.signOut().then(function() {
+				document.getElementById('profileInfo').innerHTML = '';
+			})
+		}
+	</script>
+</body>
