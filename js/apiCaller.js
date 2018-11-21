@@ -1,8 +1,5 @@
 var apiCallerApp = new Vue({
 	el: '#apiCallerDiv',
-  mounted: {
-    this.sessionChecker();
-  },
 	data : {
 		landmark_response: {
 			responses: [
@@ -278,5 +275,8 @@ var apiCallerApp = new Vue({
         console.log(session_email ? session_email.pop() : '');
         return session_email ? session_email.pop() : ''
       }
-	  }
+	  },
+    created: function() {
+      var session_email = apiCallerApp.sessionChecker();
+    }
 	})
