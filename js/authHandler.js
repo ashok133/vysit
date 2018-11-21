@@ -1,9 +1,9 @@
-document.cookie = "test_cookie=test_val; path=/";
+// document.cookie = "test_cookie=test_val; path=/";
 
 function onSignIn(googleUser) {
   var profile = googleUser.getBasicProfile();
   var email = profile.getEmail();
-  document.getElementById('profileInfo').innerHTML = profile.getName();
+  document.getElementById('profileInfo').innerHTML = "Welcome" + profile.getName();
   saveSession(email);
 }
 

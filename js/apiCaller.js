@@ -263,7 +263,7 @@ var apiCallerApp = new Vue({
  						apiCallerApp.similarity_response = json;
  						// console.log(apiCallerApp.response);
 						// document.getElementById("plotButton").style.visibility = "visible";
-						// apiCallerApp.pushSimilarImagesData(json)
+						apiCallerApp.pushSimilarImagesData(json);
  				})
   			.catch( function(err){
   				console.log(err)

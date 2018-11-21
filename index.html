@@ -2,131 +2,89 @@
 <head>
   <title>vysit</title>
 
+	<meta charset="utf-8"/>
+	<meta name="google-signin-client_id" content="55437313763-6mi03rt5oe1hae9v791t0vup40n2ge9c.apps.googleusercontent.com">
+	<title>Vysit | Login</title>
+
+	<!-- Auth handling -->
+	<script src="https://apis.google.com/js/platform.js" async defer></script>
+	<script src="js/authHandler.js"></script>
+
   <!-- Custom CSS -->
   <link rel="stylesheet" href="css/styler.css">
+
+  <!-- jquery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 
   <!-- Materialise CSS -->
   <!-- Compiled and minified CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <!-- Compiled and minified JavaScript -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-
-  <!-- vue js -->
-  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-
-  <!-- firebase -->
-  <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+  <!-- Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 </head>
 <body>
 
+  <div class="fixed-action-btn">
+    <a class="btn-floating btn-large red">
+      <i class="large material-icons">menu</i>
+    </a>
+    <ul>
+      <li><a class="btn-floating red" href="index.html"><i class="material-icons">home</i></a></li>
+      <li><a class="btn-floating yellow darken-1" href="landmarkDetection.html"><i class="material-icons">location_on</i></a></li>
+      <li><a class="btn-floating green" href="https://esoteric-source-220418.appspot.com/"><i class="material-icons">blur_on</i></a></li>
+    </ul>
+  </div>
 
-    <img src="images/index-bg.jpg" id="bg" alt="">
+    <!-- <img src="images/index-bg.jpg" id="bg" alt=""> -->
 
       <div class="container">
+				<br>
+				<br>
         <div class="about-card">
 
-        <div class="row">
-          <h3 id="hello">Welcome</h3>
-          <h6>Google Cloud Vision married Maps and gave birth to what you're seeing right now.</h6>
-          <!-- <div class="col s12 m5 l11">
-            <div class="card-panel teal">
-              <span class="white-text">Google Cloud Vision married Maps and gave birth to what you're seeing right now.
-              </span>
-            </div>
-          </div> -->
-        </div>
+					<div id="profileInfo"></div>
+					<!-- <img class="logo" src="images/logo.png" width="20%"> -->
+					<!-- <h5 class="gray-text">Product Demonstration </h5> -->
+					<h2>Cloud Vision</h2>
+					<p class="sub-header">Leveraging the Cloud that runs world's biggest knowledge graph to innovate with Vysit</p>
+
+					<div class="g-signin2" data-onsuccess="onSignIn"></div>
+					<!-- <button class="btn">Sign IN</button> -->
+
+					<br>
+
+					<div class="row">
+						<div style="width=40%">
+							<div class="col s2 m2 l2 padding-0"><img class="api-logo" src="images/ai.png" width="112px;"><p class="api-descriptor"></p></div>
+							<div class="col s2 m2 l2 padding-0"><img class="api-logo" src="images/analyse.png" width="112px;"><p class="api-descriptor"></p></div>
+							<div class="col s2 m2 l2 padding-0"><img class="api-logo" src="images/compute.png" width="112px;"><p class="api-descriptor"></p></div>
+						</div>
+					</div>
 
 
+					<br>
+					<!-- <a href="#" onclick="signOut();">Sign Out</a> -->
+					<button class="btn blue" onclick="signOut();">Sign Out</button>
 
-        <div id="apiCallerDiv">
-          <h5>Step 1: Choose an image</h5>
+					<br><br><br>
 
-          <p id="src-b64"></p>
+					<img src="images/cloud-logo.png" width="38px;">
+					<img src="images/logo.png" width="42px;">
 
-
-            <div class="col s12 m6">
-              <div class = "file-field input-field">
-               <div style="background: #664e96;" class = "btn">
-                  <span>Browse</span>
-                  <input type = "file" id="src-img"/>
-               </div>
-
-                <div class = "file-path-wrapper">
-                  <input class = "file-path validate" type = "text" placeholder = "Upload image" />
-                </div>
-              </div>
-            </div>
-
-
-          <div id="image-card">
-            <div class="col s6 m6">
-              <div class="card">
-                <div class="card-image">
-                  <img id="src-decoded" src="images/sample.jpg" >
-                  <span class="card-title"></span>
-                </div>
-                <div class="card-content">
-                  <p>{{landmark_response.responses[0].landmarkAnnotations[0].description}}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- <h6>India Gate</h6> -->
-
-          <h5>Step 2: Hit 'Detect' to identify the place</h5>
-
-          <button style="background: #664e96;" type="button" class="btn btn-secondary" @click="detectLandmark">detect</button>
-           <!-- <a class="waves-effect waves-teal btn-flat" style="color: #00897B;">Button</a> -->
-
-          <br>
-          <br>
-
-          <div v-if="landmark_response">
-            <h5>Step 3: Hit 'Show Map' to locate it on the map</h5>
-
-            <button style="background: #664e96;" type="button" class="btn btn-secondary" @click="plotResult">Show map</button>
-          </div>
-
-          <br>
-
-
-            <div class="col s12 m12 l12">
-              <div class="card">
-                <!-- <div class="card-content white-text"> -->
-                  <div class="row">
-                    <div class="col s6">
-                      <div id="googleMap" style="width:100%;height:400px;"></div>
-                    </div>
-                    <div class="col s6">
-                      <div id="pano" style="width:100%;height:400px;"></div>
-                    </div>
-                  </div>
-                <!-- </div> -->
-              </div>
-            </div>
-
-        </div>
-        <br>
-      <br>
-      © 2018 <a href="#">Vysit LLP</a>.
+					<br>
+					<br>
+      		© 2018 <a href="#">Vysit LLP</a>.
     </div>
+		<br>
+		<br>
 
-  <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
-  <script>
-    // Initialize Firebase
-    var config = {
-      apiKey: "AIzaSyBkjv3I3fuLzyvEmlwqZDV4LFiQTmo_lC0",
-      authDomain: "esoteric-source-220418.firebaseapp.com",
-      databaseURL: "https://esoteric-source-220418.firebaseio.com",
-      projectId: "esoteric-source-220418",
-      storageBucket: "esoteric-source-220418.appspot.com",
-      messagingSenderId: "55437313763"
-    };
-    firebase.initializeApp(config);
-  </script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWZ2IDESUpL3pF9dx73FO_vOy3JF7a2AY"></script>
-  <script type="text/javascript" src="js/apiCaller.js"></script>
-
+		<script>
+	  $(document).ready(function(){
+	    $('.fixed-action-btn').floatingActionButton();
+	  });</script>
 </body>
 </html>

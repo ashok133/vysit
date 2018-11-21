@@ -12,7 +12,15 @@ body {
   width: 100%;
   height: 100%;
   z-index: -1;
-  /* filter: blur(2px); */
+  filter: blur(6px);
+}
+
+.logo {
+  padding: 15px;
+  width: 100px;
+  position:absolute;
+  left:0;
+  bottom:0;
 }
 
 h5, h3 {
@@ -40,15 +48,44 @@ h5, h3 {
   width: 40%;
 }
 
+.api-descriptor {
+  align-items: center;
+  text-align: center;
+}
+
+.api-logo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0px 7px 60px rgba(112, 112, 112, 0.18);
+  border-radius: 12px;
+  /* width: 50%; */
+}
+
+.sub-header {
+  font-size: 1.5em;
+  color: #444444;
+  line-height: 1.5;
+}
+
+.padding-0{
+    padding-right:0;
+    padding-left:-10;
+}
+
 .about-card {
   background-color: #ffffff;
   padding: 40px;
   padding-top: 10px;
-  margin-top: 30px;
+  margin-top: 20px;
   width: 100%;
   /* height: 30%; */
   border-radius: 8px;
-  box-shadow: 0px 15px 17px rgba(112, 112, 112, 0.5);
+  box-shadow: 0px 7px 60px rgba(112, 112, 112, 0.15);
+}
+
+.gray-text {
+  color: #888888;
 }
 
 @media screen and (max-width: 65.375em) {
