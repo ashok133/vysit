@@ -42,6 +42,16 @@ var apiCallerApp = new Vue({
 						}
 				]
       },
+			translation_response: {
+				data: {
+        translations: [
+            {
+                translatedText: '',
+                detectedSourceLanguage: ''
+            }
+        	]
+    		}
+			},
       similarity_response: {
         responses: [
           {
@@ -118,6 +128,23 @@ var apiCallerApp = new Vue({
 					apiCallerApp.mapper(snapshot.val().query_lat, snapshot.val().query_lng, snapshot.val().description);
   			});
 			},
+			getMemories() {
+				console.log('reached memories');
+				var memoryLats = [];
+				var memoryLngs = [];
+				var map = document.getElementById('googleMap');
+				map.style.visibility = 'visible';
+				const database = firebase.database();
+				const ref = database.ref('queries');
+				ref.limitToLast(5).once('value', function (snapshot) {
+						snapshot.forEach(function(childSnapshot) {
+							console.log("FALALALALALA"+child_added.val().query_lat);
+			    	memoryLats.push(child_added.val().query_lat);
+						memoryLngs.push(child_added.val().query_lng);
+					});
+					// apiCallerApp.mapper(snapshot.val().query_lat, snapshot.val().query_lng, snapshot.val().description);
+  			});
+			},
       detectLandmark() {
 				// document.getElementById('image-card').style.visibility = 'visible';
         var files = document.getElementById('src-img').files;
@@ -163,7 +190,24 @@ var apiCallerApp = new Vue({
           console.error('Couldn\'t upload the file');
 				}
       },
+			translateTags() {
+				tagsToTranslate = 'q='
+				for (var i=0; i<apiCallerApp.similarity_response.responses[0].webDetection.webEntities.length; i++) {
+					tag = apiCallerApp.similarity_response.responses[0].webDetection.webEntities[i].description;
+					// console.log(tag);
+					tagsToTranslate += tag +"&q=";
+				}
+				tagsToTranslate = tagsToTranslate.substring(0, tagsToTranslate.length-3);
 
+				// locale selection
+				var locale = document.getElementById("localeSelect");
+				var localeValue = locale.options[locale.selectedIndex].value;
+				var fetchRequestUrl = 'https://translation.googleapis.com/language/translate/v2?key=AIzaSyAdxg74BGS4CF4-VNCNp9fhqrMR_8FzeFQ';
+				var queryParams = tagsToTranslate + '&target=' + localeValue;
+				// console.log(fetchRequestUrl);
+				apiCallerApp.fetchTranslationResults(queryParams, fetchRequestUrl);
+
+			},
 			pushLandmarkData(json) {
 				const database = firebase.database();
 				const ref = database.ref('landmarkQueries');
@@ -264,6 +308,29 @@ var apiCallerApp = new Vue({
  						// console.log(apiCallerApp.response);
 						// document.getElementById("plotButton").style.visibility = "visible";
 						apiCallerApp.pushSimilarImagesData(json);
+ 				})
+  			.catch( function(err){
+  				console.log(err)
+  			})
+			},
+			fetchTranslationResults(queryParams, fetchUrl) {
+				fetch(fetchUrl, {
+					body : queryParams,
+					mode: "cors", // no-cors, cors, *same-origin
+					headers: {
+  				    'Accept': 'application/json, text/plain, */*',
+  				    'Content-Type': 'application/x-www-form-urlencoded'
+				   	},
+				     method: "POST"
+			    })
+				 	.then((res) => {
+		        	return res.json();
+		      	})
+					.then (json => {
+					 	// console.log(json.responses[0].landmarkAnnotations[0].mid)
+            console.log(json);
+ 						apiCallerApp.translation_response = json;
+						// apiCallerApp.pushSimilarImagesData(json);
  				})
   			.catch( function(err){
   				console.log(err)

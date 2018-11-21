@@ -27,41 +27,42 @@
 
 </head>
 <body>
-
+<!--
   <div class="fixed-action-btn">
     <a class="btn-floating btn-large white">
-      <i class="large material-icons" style="color: black;">menu</i>
+      <i class="large material-icons" style="color: blue;">menu</i>
     </a>
     <ul>
-      <li><a class="btn-floating red" href="index.html"><i class="material-icons">home</i></a></li>
-      <li><a class="btn-floating yellow darken-1" href="landmarkDetection.html"><i class="material-icons">location_on</i></a></li>
-      <li><a class="btn-floating green" href="https://esoteric-source-220418.appspot.com/"><i class="material-icons">blur_on</i></a></li>
+      <li><a class="btn-floating blue darken-1" href="index.html"><i class="material-icons">home</i></a></li>
+      <li><a class="btn-floating blue darken-1" href="landmarkDetection.html"><i class="material-icons">location_on</i></a></li>
+      <li><a class="btn-floating blue" href="https://esoteric-source-220418.appspot.com/"><i class="material-icons">blur_on</i></a></li>
     </ul>
-  </div>
+  </div> -->
 
-    <!-- <img src="images/index-bg.jpg" id="bg" alt=""> -->
+    <img src="images/main-bg.png" id="bg" alt="">
 
       <div class="container">
-				<br>
-				<br>
+
         <div class="about-card">
 
 					<div id="profileInfo"></div>
-					<!-- <img class="logo" src="images/logo.png" width="20%"> -->
-					<!-- <h5 class="gray-text">Product Demonstration </h5> -->
-					<h2>Cloud Vision</h2>
-					<p class="sub-header">Leveraging the Cloud that runs world's biggest knowledge graph to innovate with Vysit</p>
-
-
-					<!-- <button class="btn">Sign IN</button> -->
-
+          <div class="row">
+						<!-- <div style="width=40%"> -->
+						<div class="col s2 m2 l2 padding-0"><img class="index-main-logo" src="images/api-logos/vision-logo.png" width="122px;"></div>
+            <div style="padding-left: 20px;" class="col s10 m10 l10">
+              <h3>Cloud Vision</h3>
+              <p class="sub-header">Leveraging the Cloud that runs world's biggest knowledge graph to innovate with Vysit</p>
+            </div>
+					</div>
+          <hr style="border-top: 0.5px dashed #ffffff; margin-left: 10px;" align="left" width=70%>
 					<br>
+
 
 					<div class="row">
 						<div style="width=40%">
-							<div class="col s2 m2 l2 padding-0"><img class="api-logo" src="images/ai.png" width="112px;"><p class="api-descriptor"></p></div>
-							<div class="col s2 m2 l2 padding-0"><img class="api-logo" src="images/analyse.png" width="112px;"><p class="api-descriptor"></p></div>
-							<div class="col s2 m2 l2 padding-0"><img class="api-logo" src="images/compute.png" width="112px;"><p class="api-descriptor"></p></div>
+							<div class="col s2 m2 l2 padding-0"><a href="labelDetection.html"><img class="api-logo" src="images/api-logos/labelDetection.png" width="112px;"></a><p class="api-descriptor">Label Detection</p></div>
+							<div class="col s2 m2 l2 padding-0"><a href="landmarkDetection.html"><img class="api-logo" src="images/api-logos/landmarkDetection.png" width="112px;"><p class="api-descriptor">Landmark Detection</p></div>
+							<div class="col s2 m2 l2 padding-0"><a href="https://esoteric-source-220418.appspot.com/"><img class="api-logo" src="images/api-logos/autoML.png" width="112px;"><p class="api-descriptor">AutoML Vision</p></div>
 						</div>
 					</div>
 
@@ -72,19 +73,19 @@
 						<div class="col s2 m2 l2">
 							<div class="g-signin2" data-onsuccess="onSignIn"></div>
 						</div>
-						<div class="col s2 m2 l2">
-						<button hidden id="signOutButton" class="btn blue" onclick="signOut();">Sign Out</button>
+						<div hidden class="col s2 m2 l2">
+						<button id="signOutButton" class="btn blue" onclick="signOut();">Sign Out</button>
 						</div>
 					</div>
 
-					<br><br><br>
-
-					<img src="images/cloud-logo.png" width="38px;">
-					<img src="images/logo.png" width="42px;">
-
 					<br>
-					<br>
-      		© 2018 <a href="#">Vysit LLP</a>.
+    </div>
+    <div class="about-card">
+      <img src="images/cloud-logo.png" width="38px;">
+      <img src="images/logo.png" width="42px;">
+
+      <br>
+      © 2018 <a href="#">Vysit LLP</a>.
     </div>
 		<br>
 		<br>

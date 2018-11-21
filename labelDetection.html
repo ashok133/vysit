@@ -27,23 +27,33 @@
 <body>
 
   <div class="fixed-action-btn">
-    <a class="btn-floating btn-large red">
-      <i class="large material-icons">menu</i>
+    <a class="btn-floating btn-large white">
+      <i class="large material-icons white" style="color: #2196f3">menu</i>
     </a>
     <ul>
-      <li><a class="btn-floating red" href="index.html"><i class="material-icons">home</i></a></li>
-      <li><a class="btn-floating yellow darken-1" href="landmarkDetection.html"><i class="material-icons">location_on</i></a></li>
-      <li><a class="btn-floating green" href="https://esoteric-source-220418.appspot.com/"><i class="material-icons">blur_on</i></a></li>
+      <li><a class="btn-floating white" href="index.html"><i class="material-icons blue">home</i></a></li>
+      <li><a class="btn-floating white darken-1" href="landmarkDetection.html"><i class="material-icons blue">location_on</i></a></li>
+      <li><a class="btn-floating white" href="https://esoteric-source-220418.appspot.com/"><i class="material-icons blue">photo_album</i></a></li>
     </ul>
   </div>
 
-    <img src="images/index-bg.jpg" id="bg" alt="">
-
+    <img src="images/child-bg.png" id="bg" alt="">
       <div class="container">
+          <div class="about-card">
+          <div class="row">
+						<!-- <div style="width=40%"> -->
+						<div class="col s2 m2 l2 padding-0"><img class="header-logo" src="images/api-logos/labelDetection.png" width="112px;"></div>
+            <div class="col s10 m10 l10">
+              <h3>Label Detection</h3>
+              <p>Let your users explore their photos beyond pixels. </p>
+            </div>
+					</div>
+        </div>
+
         <div class="about-card">
 
         <div class="row">
-          <h3 id="hello">Finding similar photos</h3>
+
           <!-- <h6>Google Cloud Vision married Maps and gave birth to what you're seeing right now.</h6> -->
           <!-- <div class="col s12 m5 l11">
             <div class="card-panel teal">
@@ -63,7 +73,7 @@
 
             <div class="col s12 m6">
               <div class = "file-field input-field">
-               <div style="background: #664e96;" class = "btn">
+               <div style="background: white; color: #2196F3;" class = "btn">
                   <span>Browse</span>
                   <input type = "file" id="src-img"/>
                </div>
@@ -87,6 +97,7 @@
                 </div>
               </div>
             </div>
+            <!-- https://translation.googleapis.com/language/translate/v2?key=AIzaSyAdxg74BGS4CF4-VNCNp9fhqrMR_8FzeFQ&q=cat&target=hi -->
             <div class="col s6 m6">
               <div class="card-panel" v-if="similarity_response">
                 <h5>Image tags</h5>
@@ -96,13 +107,40 @@
                 </div>
               </div>
             </div>
+
+            <div class="col s6 m6">
+              <div class="row">
+
+              <div class="col s4 m4">
+                <select id="localeSelect" class="browser-default">
+                  <option value="" disabled>Choose your locale</option>
+                  <option value="es" selected>Spanish</option>
+                  <option value="hi">Hindi</option>
+                  <option value="fr">French</option>
+                  <option value="zh">Chinese</option>
+                  <option value="de">German</option>
+                  <option value="ja">Japanese</option>
+                </select>
+              </div>
+              <div class="col s4 m4">
+                <button style="background: white; color: #2196F3;" type="button" class="btn btn-secondary" @click="translateTags">Translate</button>
+              </div>
+            </div>
+              <div class="card-panel" v-if="similarity_response">
+                <h5>Translations</h5>
+                <!-- <p class="white-text">sdads</p> -->
+                <div class="chip" v-for="item in translation_response.data.translations">
+                  {{item.translatedText}}<i class="close material-icons">close</i>
+                </div>
+              </div>
+            </div>
           </div>
 
           <!-- <h6>India Gate</h6> -->
 
           <h5>Step 2: Hit 'Find Similar Images' to identify the place</h5>
 
-          <button style="background: #664e96;" type="button" class="btn btn-secondary" @click="detectSimilarImages">find similar images</button>
+          <button style="background: white; color: #2196F3;" type="button" class="btn btn-secondary" @click="detectSimilarImages">find similar images</button>
            <!-- <a class="waves-effect waves-teal btn-flat" style="color: #00897B;">Button</a> -->
 
           <br>
@@ -131,7 +169,11 @@
         </div>
         <br>
       <br>
-      © 2018 <a href="#">Vysit LLP</a>.
+
+    </div>
+    <div class="copyright-card">
+      <!-- Cloud Technical Residency -->
+      <h6>© 2018 <a href="#">Vysit LLP</a>.</h6>
     </div>
 
   <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
@@ -152,6 +194,10 @@
   <script>
   $(document).ready(function(){
     $('.fixed-action-btn').floatingActionButton();
-  });</script>
+  });
+  $(document).ready(function(){
+    $('select').formSelect();
+  });
+</script>
 </body>
 </html>

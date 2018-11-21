@@ -3,6 +3,8 @@
 function onSignIn(googleUser) {
   var profile = googleUser.getBasicProfile();
   var email = profile.getEmail();
+  var photo = profile.getImageUrl();
+  document.getElementById('fabProfile').src = photo;
   document.getElementById('profileInfo').innerHTML = "Welcome " + profile.getName();
   document.getElementById('signOutButton').style.visibility = 'visible';
   saveSession(email);
