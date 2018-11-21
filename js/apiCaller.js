@@ -67,7 +67,12 @@ var apiCallerApp = new Vue({
               ],
               bestGuessLabels: [
                 {
-                  label: ''
+                  label: 'Best guess will appear here'
+                }
+              ],
+              visuallySimilarImages: [
+                {
+                  url: 'images/sample.png'
                 }
               ]
             }
@@ -121,6 +126,7 @@ var apiCallerApp = new Vue({
           reader.readAsDataURL(files[0]);
           reader.onload = function () {
             apiCallerApp.fetchLandmarkResults(reader.result.split(',')[1]);
+            apiCallerApp.similarity_response.responses[0].webDetection.bestGuessLabels[0].label = 'Loading...'
 						var output = document.getElementById('src-decoded');
 						output.style.visibility = 'visible';
       			output.src = reader.result;
@@ -256,6 +262,9 @@ var apiCallerApp = new Vue({
   			.catch( function(err){
   				console.log(err)
   			})
-			}
+			},
+      openImage(url) {
+        window.open(url,'Image','width=50px,resizable=1');
+      }
 	  }
 	})

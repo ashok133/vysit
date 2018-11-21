@@ -35,6 +35,11 @@ h5, h3 {
   width: 40%;
 }
 
+#similar-image-card {
+  /* height: 100%; */
+  width: 40%;
+}
+
 .about-card {
   background-color: #ffffff;
   padding: 40px;
