@@ -111,8 +111,9 @@
 
                   <!-- <i class="close material-icons">close</i> -->
                 </div>
-                <p>{{airport.about}}
-                <p>Reviews: {{airport.review}}</p>
+                <p>{{airport.about}}</p>
+                  Reviews<p id="reviewStars"></p>
+                <!-- <p>Reviews: {{airport.review}}</p> -->
                 <p>Address: {{airport.address}}</p>
                 <p>Phone: {{airport.phone}}</p>
 
@@ -135,14 +136,14 @@
           <br>
           <p><b>Chain:&nbsp;</b>{{hotel.hotelResultSet[0].chain_name}}</p>
           <br>
-          <p>📍 [{{hotel.hotelResultSet[0].latitude}}, {{hotel.hotelResultSet[0].longitude}}]</p>
-          <p>⭐ {{hotel.hotelResultSet[0].stars}}/5</p>
+          <p> &#x1F4CD [{{hotel.hotelResultSet[0].latitude}}, {{hotel.hotelResultSet[0].longitude}}]</p>
+          <p> &#x2B50 {{hotel.hotelResultSet[0].stars}}/5</p>
         </div>
       </div>
     </div>
   </div>
-  <div class = "col s6 m6 l6"><button style="background: white; color: #000000;" type="button" class="btn btn-secondary">✈️ Book flight</button>
-  <button style="background: white; color: #000000;" type="button" class="btn btn-secondary">🏨 Book hotel</button></div>
+  <div class = "col s6 m6 l6"><button style="background: white; color: #000000;" type="button" class="btn btn-secondary">&#x2708 Book flight</button>
+  <button style="background: white; color: #000000;" type="button" class="btn btn-secondary">&#x1F3E8 Book hotel</button></div>
 
 
           </div>

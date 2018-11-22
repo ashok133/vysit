@@ -689,7 +689,8 @@ var apiCallerApp = new Vue({
 				apiCallerApp.airport.code = 'CDG';
 				apiCallerApp.airport.name = 'Charles de Gaulle Airport';
 				apiCallerApp.airport.address = '95700 Roissy-en-France, France';
-				apiCallerApp.airport.review = '⭐⭐⭐⭐';
+				// apiCallerApp.airport.review = '&#x2B50 &#x2B50 &#x2B50 &#x2B50';
+				document.getElementById('reviewStars').innerHTML = '&#x2B50 &#x2B50 &#x2B50 &#x2B50'
 				apiCallerApp.airport.phone = '+33 1 70 36 39 50';
 				apiCallerApp.airport.about = 'Paris Charles de Gaulle Airport, also known as Roissy Airport, is the largest international airport in France and the second largest in Europe.';
 			},
