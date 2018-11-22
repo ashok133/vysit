@@ -72,6 +72,7 @@
             </div>
           </div>
 
+          <div class="row">
           <div id="image-card">
             <div class="col s6 m6">
               <div class="card">
@@ -79,16 +80,73 @@
                   <img id="src-decoded" src="images/sample.jpg" >
                 </div>
               </div>
-              <div class="col s6 m6">
+
 
                 <div class="card-panel blue" style=" padding:5px 16px 5px 16px;">
                   <p class="main-label-card"><span class="white-text main-label-card"><b>{{landmark_response.responses[0].landmarkAnnotations[0].description}}</b>
                   </span></hp>
                 </div>
+                <button style="background: white; color: #2196F3;" type="button" class="btn btn-secondary" @click="detectLandmark">detect</button>
+            </div>
+
+          </div>
+          <div>
+            <!-- <div class="col s6 m6">
+              <div class="card">
+                <div class="card-image">
+
+                </div>
+              </div>
+              <div class="col s6 m6">
+
+
+              </div>
+            </div> -->
+            <div class = "col s6 m6 l6">
+              <div class="card" style="padding:5px 16px 10px 16px;">
+                <p><b>Nearest airport</b></p>
+                  <!-- <div v-if="text_detection_response"> -->
+                <div class="chip blue">
+                  <div style="color:white;">{{airport.code}}: {{airport.name}}</div>
+
+                  <!-- <i class="close material-icons">close</i> -->
+                </div>
+                <p>{{airport.about}}
+                <p>Reviews: {{airport.review}}</p>
+                <p>Address: {{airport.address}}</p>
+                <p>Phone: {{airport.phone}}</p>
+
+                <!-- </div> -->
               </div>
             </div>
-            <button style="background: white; color: #2196F3;" type="button" class="btn btn-secondary" @click="detectLandmark">detect</button>
+
+
+            <div class = "col s6 m6 l6">
+            <div class="card horizontal">
+      <div class="card-image">
+        <img :src="hotelThumb">
+      </div>
+      <div class="card-stacked">
+        <div class="card-content">
+          <p><b>Hotel you'd like</b></p>
+          <br>
+          <!-- <p>{{possible_tag}}</p> -->
+          <p><b>Name:&nbsp;</b>{{hotel.hotelResultSet[0].hotel_name}}</p>
+          <br>
+          <p><b>Chain:&nbsp;</b>{{hotel.hotelResultSet[0].chain_name}}</p>
+          <br>
+          <p>📍 [{{hotel.hotelResultSet[0].latitude}}, {{hotel.hotelResultSet[0].longitude}}]</p>
+          <p>⭐ {{hotel.hotelResultSet[0].stars}}/5</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class = "col s6 m6 l6"><button style="background: white; color: #000000;" type="button" class="btn btn-secondary">✈️ Book flight</button>
+  <button style="background: white; color: #000000;" type="button" class="btn btn-secondary">🏨 Book hotel</button></div>
+
+
           </div>
+        </div>
           <!-- <h6>India Gate</h6> -->
           <br>
           <h5>Step 2: Hit 'Detect' to identify the place</h5>
@@ -118,6 +176,7 @@
             </div>
           </div>
           <button style="background: white; color: #2196F3;" type="button" class="btn btn-secondary" @click="plotResult">Show map</button>
+          <button style="background: white; color: #2196F3;" type="button" class="btn btn-secondary" @click="getHotelRecommendations">Hotels</button>
           <br>
           <br>
         </div>

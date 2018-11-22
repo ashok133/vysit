@@ -8,6 +8,37 @@ var apiCallerApp = new Vue({
 		racy_bool: false,
 		spoof_bool: false,
 		possible_tag: "chip red",
+		airport: {
+			code:'',
+			name:'',
+			review: '',
+			phone:'',
+			about:'',
+			address:''
+		},
+		hotelThumb: '',
+		hotel: {
+			hotelResultSet: [
+        {
+            chain_name: '',
+            hotel_id: '',
+            hotel_name:'',
+            latitude: 0,
+            longitude: 0,
+            max_rate: {
+                amount: 21951.12,
+                currency: ''
+            },
+            min_rate: {
+                amount: 18024.3,
+                currency: ''
+            },
+            stars: 0,
+            thumbnail: '',
+            distance: 1.425
+        }
+    	]
+		},
 		emotions: {},
 		face_detection_response: {},
 		safe_search_response: {
@@ -255,6 +286,8 @@ var apiCallerApp = new Vue({
           reader.readAsDataURL(files[0]);
           reader.onload = function () {
             apiCallerApp.fetchLandmarkResults(reader.result.split(',')[1]);
+						apiCallerApp.getNearestAirport();
+						apiCallerApp.getHotelRecommendations();
             apiCallerApp.similarity_response.responses[0].webDetection.bestGuessLabels[0].label = 'Loading...'
 						var output = document.getElementById('src-decoded');
 						output.style.visibility = 'visible';
@@ -615,6 +648,54 @@ var apiCallerApp = new Vue({
   			.catch( function(err){
   				console.log(err)
   			})
+			},
+			getHotelRecommendations() {
+				fetch('https://private-9bd8e-allmyles.apiary-mock.com/hotels', {
+					// body : JSON.stringify({
+    			// 	cityCode: "AMS",
+					// 	rooms: [{
+					// 		ADT: 1
+					// 	}],
+					// 	arrivalDate: this.formatDate(new Date(), 60),
+					// 	leaveDate: this.formatDate(new Date(), 65),
+					// 	nationality: "HU"
+  				//     }),
+							body: {},
+					     mode: "cors", // no-cors, cors, *same-origin
+					     headers: {
+    				    'Accept': 'application/json, text/plain, */*',
+    				    'Content-Type': 'application/json; charset=utf-8'
+								// 'X-Auth-Token': '9bf87a84-23ae',
+								// 'Cookie': 757575
+  				    },
+					     method: "POST"
+				    }
+			   )
+					.then((res) => {
+        		return res.json();
+      		})
+					.then (json => {
+						console.log(json);
+						apiCallerApp.hotel = json;
+						apiCallerApp.hotelThumb = 'images/mercure_resized.png'
+						// apiCallerApp.aggregateTextStats(json);
+ 						// console.log(apiCallerApp.face_detection_response.responses[0].faceAnnotations[0].joyLikelihood);
+ 				})
+  			.catch( function(err){
+  				console.log(err)
+  			})
+			},
+			getNearestAirport() {
+				apiCallerApp.airport.code = 'CDG';
+				apiCallerApp.airport.name = 'Charles de Gaulle Airport';
+				apiCallerApp.airport.address = '95700 Roissy-en-France, France';
+				apiCallerApp.airport.review = '⭐⭐⭐⭐';
+				apiCallerApp.airport.phone = '+33 1 70 36 39 50';
+				apiCallerApp.airport.about = 'Paris Charles de Gaulle Airport, also known as Roissy Airport, is the largest international airport in France and the second largest in Europe.';
+			},
+			formatDate(date, days) {
+				date.setDate(date.getDate() + days);
+    		return date.toISOString().split('T')[0];
 			},
 			aggregateEmotionStats(json) {
 				var emotions = new Map();
