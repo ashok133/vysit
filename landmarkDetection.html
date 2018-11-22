@@ -44,15 +44,16 @@
 						<!-- <div style="width=40%"> -->
 						<div class="col s2 m2 l2 padding-0"><img class="header-logo" src="images/api-logos/landmarkDetection.png" width="112px;"></div>
             <div class="col s10 m10 l10">
-              <h3>Cloud Vision - Landmark Detection</h3>
-              <p>Detect popular natural and man-made structures within an image.</p>
+              <h3>Landmark Detection</h3>
+              <p>Let your users revisit their lost memories</p>
             </div>
 					</div>
         </div>
+        <div id="apiCallerDiv">
         <div class="about-card">
 
 
-        <div id="apiCallerDiv">
+
 
           <h5>Step 1: Upload an image</h5>
 
@@ -79,8 +80,9 @@
                 </div>
               </div>
               <div class="col s6 m6">
-                <div class="card-panel blue">
-                  <p class="main-label-card"><span class="white-text main-label-card">{{landmark_response.responses[0].landmarkAnnotations[0].description}}
+
+                <div class="card-panel blue" style=" padding:5px 16px 5px 16px;">
+                  <p class="main-label-card"><span class="white-text main-label-card"><b>{{landmark_response.responses[0].landmarkAnnotations[0].description}}</b>
                   </span></hp>
                 </div>
               </div>
@@ -116,11 +118,9 @@
             </div>
           </div>
           <button style="background: white; color: #2196F3;" type="button" class="btn btn-secondary" @click="plotResult">Show map</button>
-          <button style="background: white; color: #2196F3;" type="button" class="btn btn-secondary" @click="getMemories">SHOW PAST LOCATIONS</button>
+          <br>
+          <br>
         </div>
-        <br>
-      <br>
-    </div>
 
     <div class="about-card">
       <div v-if="landmark_response">
@@ -136,10 +136,16 @@
               </div>
 
             </div>
+
           <!-- </div> -->
         </div>
+        <button style="background: white; color: #2196F3;" type="button" class="btn btn-secondary" @click="getMemories">SHOW PAST LOCATIONS</button>
+        <br>
+        <br>
       </div>
-      <!-- <button style="background: white; color: #2196F3;" type="button" class="btn btn-secondary" @click="getMemories">SHOW PAST LOCATIONS</button> -->
+
+    </div>
+
     </div>
     <div class="copyright-card">
       <!-- Cloud Technical Residency -->

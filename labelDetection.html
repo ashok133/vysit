@@ -79,15 +79,19 @@
                   <img id="src-decoded" src="images/sample.jpg">
                 </div>
               </div>
-              <div class="card-panel blue">
-                <p class="main-label-card"><span class="white-text main-label-card">{{similarity_response.responses[0].webDetection.bestGuessLabels[0].label}}
+              <!-- <div class="card" style="padding: 16px; padding-top:5px;">
+                <p><b>Objects identified:</b></p> -->
+              <div class="card-panel blue" style=" padding:5px 16px 5px 16px;">
+                <p class="main-label-card"><span class="white-text main-label-card"><b>{{similarity_response.responses[0].webDetection.bestGuessLabels[0].label}}</b>
                 </span></hp>
               </div>
             </div>
             <!-- https://translation.googleapis.com/language/translate/v2?key=AIzaSyAdxg74BGS4CF4-VNCNp9fhqrMR_8FzeFQ&q=cat&target=hi -->
             <div class="col s6 m6">
-              <div class="card-panel" v-if="similarity_response">
-                <h5>Image tags</h5>
+              <!-- <div class="card-panel" v-if="similarity_response"> -->
+                 <div class="card" style="padding:5px 16px 10px 16px; font-size: 18px; color: #2196f3;">
+                  <p><b>Image tags</b></p>
+                <!-- <h5>Image tags</h5> -->
                 <!-- <p class="white-text">sdads</p> -->
                 <div class="chip" v-for="item in similarity_response.responses[0].webDetection.webEntities">
                   {{item.description}}<i class="close material-icons">close</i>
@@ -113,8 +117,8 @@
                 <button style="background: white; color: #2196F3;" type="button" class="btn btn-secondary" @click="translateTags">Translate</button>
               </div>
             </div>
-              <div class="card-panel" v-if="similarity_response">
-                <h5>Translations</h5>
+            <div class="card" style="padding:5px 16px 10px 16px; font-size: 18px; color: #2196f3;">
+             <p><b>Translated tags</b></p>
                 <!-- <p class="white-text">sdads</p> -->
                 <div class="chip" v-for="item in translation_response.data.translations">
                   {{item.translatedText}}<i class="close material-icons">close</i>
@@ -136,67 +140,102 @@
           <h5>Similar images that you might like</h5>
           <div class="row" v-if="similarity_response">
             <div class="col s3 m3" v-for="item in similarity_response.responses[0].webDetection.visuallySimilarImages">
-              <div class="card z-depth-4">
+              <div class="card">
                 <div class="card-image">
                   <img id="src-decoded" :src='item.url' @click="openImage(item.url)">
                 </div>
               </div>
             </div>
           </div>
-
           <br>
-
           <h5>Articles that you might like</h5>
-          <div v-if="similarity_response">
-            <div v-for="item in similarity_response.responses[0].webDetection.pagesWithMatchingImages">
-              <a :href='item.url' target="_blank">- {{item.url}}</a>
-            </div>
-          </div>
 
-        </div>
+          <div v-if="similarity_response">
+            <ul class="collection">
+              <div v-for="item in similarity_response.responses[0].webDetection.pagesWithMatchingImages">
+                <li class="collection-item"><a :href='item.url' target="_blank">{{item.url}}</a></li>
+              </div>
+            </ul>
+          </div>
+          </div>
 
         <div class="about-card">
           <div v-if="landmark_response">
           <h5>Nerd stats</h5>
         </div>
 
-        <div class="col s12 m12 l12">
+        <div class="col s12 m12 l12 nerd-block">
           <!-- <div class="card"> -->
                 <div class="col s12">
                   <div id="emotion_state" style="width:100%;height:400px;">
                     <div class="row">
-                      <div class = "col s6 m6 l6">
-                        <div class="card" style="padding-left: 16px;">
-                          <p>Emotions identified:</p>
-                            <div class="chip" v-for="item in emotions">
-                              {{item[0]}}:&nbsp; {{item[1]}}
+                        <div class = "col s6 m6 l6">
+                          <div class="card" style="padding:5px 16px 10px 16px;">
+                            <p><b>Text Annotations</b></p>
+                            <div><code>{text_annotation}</code></div>
+                            <br>
+                              <!-- <div v-if="text_detection_response"> -->
+                            <div class="chip blue" v-for="item in text_detection_response.responses[0].textAnnotations">
+                              <div style="color:white;">{{item.description}}</div>
+                              <!-- <i class="close material-icons">close</i> -->
                             </div>
+                            <!-- </div> -->
                           </div>
                         </div>
 
-                        <div class = "col s6 m6 l6">
-                          <div class="card" style="padding-left: 16px;">
-                            <p>Text Annotations:</p>
-                              <!-- <div v-if="text_detection_response"> -->
-                              <div class="chip blue" v-for="item in text_detection_response.responses[0].textAnnotations">
-                                <div style="color:white;">{{item.description}}</div>
-                                <!-- <i class="close material-icons">close</i> -->
-                              </div>
-                            <!-- </div> -->
-                            </div>
-                          </div>
-
                           <div class = "col s6 m6 l6">
-                            <div class="card" style="padding-left: 16px;">
-                              <p>Objects identified:</p>
+                            <div class="card" style="padding:5px 16px 10px 16px;">
+                              <p><b>Objects identified</b></p>
+                              <div><code>{object: confidence_score}</code></div>
+                              <br>
                                 <!-- <div v-if="text_detection_response"> -->
-                                <div class="chip red" v-for="item in object_detection_response.responses[0].localizedObjectAnnotations">
+                                <div class="chip orange" v-for="item in object_detection_response.responses[0].localizedObjectAnnotations">
                                   <div style="color:white;">{{item.name}}:&nbsp; {{item.score}}</div>
                                   <!-- <i class="close material-icons">close</i> -->
                                 </div>
                               <!-- </div> -->
                               </div>
                             </div>
+
+                            <div class = "col s6 m6 l6">
+                              <div class="card" style="padding:5px 16px 10px 16px;">
+                                <p><b>Emotions identified</b></p>
+                                <div><code>{emotion_state: count}</code></div>
+                                  <div class="chip" v-for="item in emotions">
+                                    {{item[0]}}:&nbsp; {{item[1]}}
+                                  </div>
+                                </div>
+                              </div>
+
+                          <div class = "col s6 m6 l6">
+                            <div class="card" style="padding:5px 16px 10px 16px;">
+                              <p><b>Safe search</b></p>
+                              <div><code>{attribute: possibility}</code></div>
+                              <br>
+                                <!-- <div v-if="text_detection_response"> -->
+                                <!-- <div :class='{possible_tag: passible_tag_bool}'> -->
+                                <!-- <div :class='possible_tag'> -->
+                                <div v-bind:class=" adult_bool ? 'chip red': 'chip orange' ">
+                                  <div style="color:white;">adult:&nbsp; {{safe_search_response.responses[0].safeSearchAnnotation.adult}}</div>
+                                </div>
+                                <div v-bind:class=" medical_bool ? 'chip red': 'chip orange' ">
+                                  <div style="color:white;">medical:&nbsp; {{safe_search_response.responses[0].safeSearchAnnotation.medical}}</div>
+                                </div>
+                                <div v-bind:class=" racy_bool ? 'chip red': 'chip orange' ">
+                                  <div style="color:white;">racy:&nbsp; {{safe_search_response.responses[0].safeSearchAnnotation.racy}}</div>
+                                </div>
+                                <div v-bind:class=" spoof_bool ? 'chip red': 'chip orange' ">
+                                  <div style="color:white;">spoof:&nbsp; {{safe_search_response.responses[0].safeSearchAnnotation.spoof}}</div>
+                                </div>
+                                <!-- <div class="chip orange"> -->
+                                <div v-bind:class=" violence_bool ? 'chip red': 'chip orange' ">
+                                  <div style="color:white;">violence:&nbsp; {{safe_search_response.responses[0].safeSearchAnnotation.violence}}</div>
+                                </div>
+                              <!-- </div> -->
+                              </div>
+                            </div>
+
+
 
                       </div>
                     </div>

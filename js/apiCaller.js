@@ -1,14 +1,32 @@
 var apiCallerApp = new Vue({
 	el: '#apiCallerDiv',
 	data : {
+		// possibe
+		adult_bool: false,
+		violence_bool: false,
+		medical_bool: false,
+		racy_bool: false,
+		spoof_bool: false,
+		possible_tag: "chip red",
 		emotions: {},
 		face_detection_response: {},
+		safe_search_response: {
+			responses: [ {
+				safeSearchAnnotation: {
+					adult: '',
+					medical: '',
+					racy: '',
+					violence: '',
+					spoof: ''
+				}
+			} ]
+		},
 		text_detection_response: {
 			responses: [
 			{
 				textAnnotations: [
 					{
-						description: ''
+						description: 'No text annotation'
 					}
 				]
 			}
@@ -19,7 +37,7 @@ var apiCallerApp = new Vue({
 			{
 				localizedObjectAnnotations: [
 					{
-						name: '',
+						name: 'object',
 						score:0
 					}
 				]
@@ -32,7 +50,7 @@ var apiCallerApp = new Vue({
 					landmarkAnnotations: [
 							{
 									mid: 'dss',
-									description: 'The identifed landmark will be displayed here',
+									description: 'The identifed landmark will appear here',
 									score: 0,
 									boundingPoly: {
 											vertices: [
@@ -107,7 +125,7 @@ var apiCallerApp = new Vue({
               ],
               visuallySimilarImages: [
                 {
-                  url: 'images/sample.png'
+                  url: 'images/sample.jpg'
                 }
               ]
             }
@@ -284,6 +302,7 @@ var apiCallerApp = new Vue({
             apiCallerApp.getNerdFaceLabels(reader.result.split(',')[1]);
 						apiCallerApp.getNerdObjectLabels(reader.result.split(',')[1]);
 						apiCallerApp.getNerdTextLabels(reader.result.split(',')[1]);
+						apiCallerApp.getSafeSearchLabels(reader.result.split(',')[1]);
           };
           reader.onerror = function (error) {
             console.log('Error: ', error);
@@ -534,6 +553,62 @@ var apiCallerApp = new Vue({
 					.then (json => {
  						apiCallerApp.text_detection_response = json;
 						console.log(json);
+						// apiCallerApp.aggregateTextStats(json);
+ 						// console.log(apiCallerApp.face_detection_response.responses[0].faceAnnotations[0].joyLikelihood);
+ 				})
+  			.catch( function(err){
+  				console.log(err)
+  			})
+			},
+			getSafeSearchLabels(src_b64) {
+				fetch('https://vision.googleapis.com/v1/images:annotate?key=AIzaSyAdxg74BGS4CF4-VNCNp9fhqrMR_8FzeFQ', {
+					body : JSON.stringify({
+    				requests : [
+                {
+                  image: {
+                    content: src_b64
+                  },
+                  features: [
+                    {
+                      // type: "WEB_DETECTION",
+											// type: "OBJECT_LOCALIZATION",
+											// type: "FACE_DETECTION",
+											type: "SAFE_SEARCH_DETECTION",
+                      maxResults: 10
+                      }
+                    ]
+                  }
+                ]
+  				    }),
+					     mode: "cors", // no-cors, cors, *same-origin
+					     headers: {
+    				    'Accept': 'application/json, text/plain, */*',
+    				    'Content-Type': 'application/json; charset=utf-8'
+  				    },
+					     method: "POST"
+				    }
+			   )
+					.then((res) => {
+        		return res.json();
+      		})
+					.then (json => {
+ 						apiCallerApp.safe_search_response = json;
+						console.log(json);
+						if (json.responses[0].safeSearchAnnotation.violence == "VERY_LIKELY" || json.responses[0].safeSearchAnnotation.violence == "POSSIBLE" || json.responses[0].safeSearchAnnotation.violence == "LIKELY") {
+							apiCallerApp.violence_bool = true;
+						}
+						if (json.responses[0].safeSearchAnnotation.medical == "VERY_LIKELY" || json.responses[0].safeSearchAnnotation.medical == "POSSIBLE" || json.responses[0].safeSearchAnnotation.medical == "LIKELY") {
+							apiCallerApp.medical_bool = true;
+						}
+						if (json.responses[0].safeSearchAnnotation.spoof == "VERY_LIKELY" || json.responses[0].safeSearchAnnotation.spoof == "POSSIBLE" || json.responses[0].safeSearchAnnotation.spoof == "LIKELY") {
+							apiCallerApp.spoof_bool = true;
+						}
+						if (json.responses[0].safeSearchAnnotation.racy == "VERY_LIKELY" || json.responses[0].safeSearchAnnotation.racy == "POSSIBLE" || json.responses[0].safeSearchAnnotation.racy == "LIKELY") {
+							apiCallerApp.racy_bool = true;
+						}
+						if (json.responses[0].safeSearchAnnotation.adult == "VERY_LIKELY" || json.responses[0].safeSearchAnnotation.adult == "POSSIBLE" || json.responses[0].safeSearchAnnotation.adult == "LIKELY") {
+							apiCallerApp.adult_bool = true;
+						}
 						// apiCallerApp.aggregateTextStats(json);
  						// console.log(apiCallerApp.face_detection_response.responses[0].faceAnnotations[0].joyLikelihood);
  				})

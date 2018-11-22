@@ -52,6 +52,10 @@ h5 {
   width: 40%;
 }
 
+.nerd-block {
+  height: max-content;
+}
+
 .main-label-panel {
   font-size: 132px;
 }
