@@ -1,6 +1,31 @@
 var apiCallerApp = new Vue({
 	el: '#apiCallerDiv',
 	data : {
+		emotions: {},
+		face_detection_response: {},
+		text_detection_response: {
+			responses: [
+			{
+				textAnnotations: [
+					{
+						description: ''
+					}
+				]
+			}
+			]
+		},
+		object_detection_response: {
+			responses: [
+			{
+				localizedObjectAnnotations: [
+					{
+						name: '',
+						score:0
+					}
+				]
+			}
+			]
+		},
 		landmark_response: {
 			responses: [
 			{
@@ -249,6 +274,25 @@ var apiCallerApp = new Vue({
           console.error('Couldn\'t upload the file');
 				}
       },
+			getNerdStats() {
+				// document.getElementById('image-card').style.visibility = 'visible';
+        var files = document.getElementById('src-img').files;
+        if (files.length > 0) {
+          var reader = new FileReader();
+          reader.readAsDataURL(files[0]);
+          reader.onload = function () {
+            apiCallerApp.getNerdFaceLabels(reader.result.split(',')[1]);
+						apiCallerApp.getNerdObjectLabels(reader.result.split(',')[1]);
+						apiCallerApp.getNerdTextLabels(reader.result.split(',')[1]);
+          };
+          reader.onerror = function (error) {
+            console.log('Error: ', error);
+          };
+        }
+        else {
+          console.error('Couldn\'t upload the file');
+				}
+      },
 			translateTags() {
 				tagsToTranslate = 'q='
 				for (var i=0; i<apiCallerApp.similarity_response.responses[0].webDetection.webEntities.length; i++) {
@@ -343,6 +387,9 @@ var apiCallerApp = new Vue({
                   features: [
                     {
                       type: "WEB_DETECTION",
+											// type: "OBJECT_LOCALIZATION",
+											// type: "FACE_DETECTION",
+											// type: "TEXT_DETECTION",
                       maxResults: 10
                       }
                     ]
@@ -371,6 +418,165 @@ var apiCallerApp = new Vue({
   			.catch( function(err){
   				console.log(err)
   			})
+			},
+			getNerdFaceLabels(src_b64) {
+				fetch('https://vision.googleapis.com/v1/images:annotate?key=AIzaSyAdxg74BGS4CF4-VNCNp9fhqrMR_8FzeFQ', {
+					body : JSON.stringify({
+    				requests : [
+                {
+                  image: {
+                    content: src_b64
+                  },
+                  features: [
+                    {
+                      // type: "WEB_DETECTION",
+											// type: "OBJECT_LOCALIZATION",
+											type: "FACE_DETECTION",
+											// type: "TEXT_DETECTION",
+                      maxResults: 10
+                      }
+                    ]
+                  }
+                ]
+  				    }),
+					     mode: "cors", // no-cors, cors, *same-origin
+					     headers: {
+    				    'Accept': 'application/json, text/plain, */*',
+    				    'Content-Type': 'application/json; charset=utf-8'
+  				    },
+					     method: "POST"
+				    }
+			   )
+					.then((res) => {
+        		return res.json();
+      		})
+					.then (json => {
+ 						apiCallerApp.face_detection_response = json;
+						apiCallerApp.aggregateEmotionStats(json);
+ 						console.log(apiCallerApp.face_detection_response.responses[0].faceAnnotations[0].joyLikelihood);
+ 				})
+  			.catch( function(err){
+  				console.log(err)
+  			})
+			},
+			getNerdObjectLabels(src_b64) {
+				fetch('https://vision.googleapis.com/v1/images:annotate?key=AIzaSyAdxg74BGS4CF4-VNCNp9fhqrMR_8FzeFQ', {
+					body : JSON.stringify({
+    				requests : [
+                {
+                  image: {
+                    content: src_b64
+                  },
+                  features: [
+                    {
+                      // type: "WEB_DETECTION",
+											type: "OBJECT_LOCALIZATION",
+											// type: "FACE_DETECTION",
+											// type: "TEXT_DETECTION",
+                      maxResults: 10
+                      }
+                    ]
+                  }
+                ]
+  				    }),
+					     mode: "cors", // no-cors, cors, *same-origin
+					     headers: {
+    				    'Accept': 'application/json, text/plain, */*',
+    				    'Content-Type': 'application/json; charset=utf-8'
+  				    },
+					     method: "POST"
+				    }
+			   )
+					.then((res) => {
+        		return res.json();
+      		})
+					.then (json => {
+ 						apiCallerApp.object_detection_response = json;
+						console.log(json);
+						// apiCallerApp.aggregateNerdStats(json);
+ 						// console.log(apiCallerApp.face_detection_response.responses[0].faceAnnotations[0].joyLikelihood);
+ 				})
+  			.catch( function(err){
+  				console.log(err)
+  			})
+			},
+			getNerdTextLabels(src_b64) {
+				fetch('https://vision.googleapis.com/v1/images:annotate?key=AIzaSyAdxg74BGS4CF4-VNCNp9fhqrMR_8FzeFQ', {
+					body : JSON.stringify({
+    				requests : [
+                {
+                  image: {
+                    content: src_b64
+                  },
+                  features: [
+                    {
+                      // type: "WEB_DETECTION",
+											// type: "OBJECT_LOCALIZATION",
+											// type: "FACE_DETECTION",
+											type: "TEXT_DETECTION",
+                      maxResults: 10
+                      }
+                    ]
+                  }
+                ]
+  				    }),
+					     mode: "cors", // no-cors, cors, *same-origin
+					     headers: {
+    				    'Accept': 'application/json, text/plain, */*',
+    				    'Content-Type': 'application/json; charset=utf-8'
+  				    },
+					     method: "POST"
+				    }
+			   )
+					.then((res) => {
+        		return res.json();
+      		})
+					.then (json => {
+ 						apiCallerApp.text_detection_response = json;
+						console.log(json);
+						// apiCallerApp.aggregateTextStats(json);
+ 						// console.log(apiCallerApp.face_detection_response.responses[0].faceAnnotations[0].joyLikelihood);
+ 				})
+  			.catch( function(err){
+  				console.log(err)
+  			})
+			},
+			aggregateEmotionStats(json) {
+				var emotions = new Map();
+				// var emotions = [];
+				var joy = 0;
+				var surprise = 0;
+				var sorrow = 0;
+				var anger = 0;
+				var faceAnnotations = json.responses[0].faceAnnotations;
+				for (var i=0; i<faceAnnotations.length; i++) {
+					if (faceAnnotations[i].joyLikelihood == "VERY_LIKELY" || faceAnnotations[i].joyLikelihood == "POSSIBLE") {
+						console.log("JOY FOUND");
+						joy += 1;
+					}
+					if (faceAnnotations[i].sorrowLikelihood == "VERY_LIKELY" || faceAnnotations[i].sorrowLikelihood == "POSSIBLE") {
+						console.log("SORROW FOUND");
+						sorrow += 1 ;
+						// emotions.push('sorrow');
+					}
+					if (faceAnnotations[i].surpriseLikelihood == "VERY_LIKELY" || faceAnnotations[i].surpriseLikelihood == "POSSIBLE") {
+						console.log("SURPRISE FOUND");
+						surprise += 1 ;
+						// emotions.push('surprise');
+					}
+					if (faceAnnotations[i].angerLikelihood == "VERY_LIKELY" || faceAnnotations[i].angerLikelihood == "POSSIBLE") {
+						console.log("ANGER FOUND");
+						anger += 1 ;
+						// emotions.push('anger');
+					}
+				}
+				emotions.set('joy',joy);
+				emotions.set('sorrow',sorrow);
+				emotions.set('surprise',surprise);
+				emotions.set('anger',anger);
+				// document.getElementById('emotion_state').innerHTML = emotions.toString();
+				apiCallerApp.emotions = Array.from(emotions);
+				console.log(apiCallerApp.emotions);
 			},
 			fetchTranslationResults(queryParams, fetchUrl) {
 				fetch(fetchUrl, {

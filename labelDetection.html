@@ -37,64 +37,51 @@
     </ul>
   </div>
 
-    <img src="images/child-bg.png" id="bg" alt="">
+      <img src="images/child-bg.png" id="bg" alt="">
       <div class="container">
-          <div class="about-card">
+        <div class="about-card">
           <div class="row">
-						<!-- <div style="width=40%"> -->
+
 						<div class="col s2 m2 l2 padding-0"><img class="header-logo" src="images/api-logos/labelDetection.png" width="112px;"></div>
             <div class="col s10 m10 l10">
-              <h3>Label Detection</h3>
-              <p>Let your users explore their photos beyond pixels. </p>
+                <h3>Label Detection</h3>
+                <p>Let your users explore their photos beyond pixels. </p>
             </div>
 					</div>
         </div>
 
+        <div id="apiCallerDiv">
         <div class="about-card">
 
-        <div class="row">
 
-          <!-- <h6>Google Cloud Vision married Maps and gave birth to what you're seeing right now.</h6> -->
-          <!-- <div class="col s12 m5 l11">
-            <div class="card-panel teal">
-              <span class="white-text">Google Cloud Vision married Maps and gave birth to what you're seeing right now.
-              </span>
-            </div>
-          </div> -->
-        </div>
-
-
-
-        <div id="apiCallerDiv">
           <h5>Step 1: Choose an image</h5>
 
           <p id="src-b64"></p>
 
 
-            <div class="col s12 m6">
-              <div class = "file-field input-field">
-               <div style="background: white; color: #2196F3;" class = "btn">
+          <div class="col s12 m6">
+            <div class = "file-field input-field">
+              <div style="background: white; color: #2196F3;" class = "btn">
                   <span>Browse</span>
                   <input type = "file" id="src-img"/>
-               </div>
-
-                <div class = "file-path-wrapper">
+              </div>
+              <div class = "file-path-wrapper">
                   <input class = "file-path validate" type = "text" placeholder = "Upload image" />
-                </div>
               </div>
             </div>
+          </div>
 
 
           <div class="row">
             <div class="col s6 m6">
               <div class="card">
                 <div class="card-image">
-                  <img id="src-decoded" src="images/sample.jpg" >
-                  <span class="card-title"></span>
+                  <img id="src-decoded" src="images/sample.jpg">
                 </div>
-                <div class="card-content">
-                  <p>{{similarity_response.responses[0].webDetection.bestGuessLabels[0].label}}</p>
-                </div>
+              </div>
+              <div class="card-panel blue">
+                <p class="main-label-card"><span class="white-text main-label-card">{{similarity_response.responses[0].webDetection.bestGuessLabels[0].label}}
+                </span></hp>
               </div>
             </div>
             <!-- https://translation.googleapis.com/language/translate/v2?key=AIzaSyAdxg74BGS4CF4-VNCNp9fhqrMR_8FzeFQ&q=cat&target=hi -->
@@ -138,18 +125,18 @@
 
           <!-- <h6>India Gate</h6> -->
 
-          <h5>Step 2: Hit 'Find Similar Images' to identify the place</h5>
+          <h5>Step 2: Hit 'Detect' to identify the place and its labels</h5>
 
-          <button style="background: white; color: #2196F3;" type="button" class="btn btn-secondary" @click="detectSimilarImages">find similar images</button>
+          <button style="background: white; color: #2196F3;" type="button" class="btn btn-secondary" @click="detectSimilarImages">detect</button>
            <!-- <a class="waves-effect waves-teal btn-flat" style="color: #00897B;">Button</a> -->
 
           <br>
           <br>
 
-          <h5>Images that you might like</h5>
+          <h5>Similar images that you might like</h5>
           <div class="row" v-if="similarity_response">
             <div class="col s3 m3" v-for="item in similarity_response.responses[0].webDetection.visuallySimilarImages">
-              <div class="card">
+              <div class="card z-depth-4">
                 <div class="card-image">
                   <img id="src-decoded" :src='item.url' @click="openImage(item.url)">
                 </div>
@@ -167,37 +154,88 @@
           </div>
 
         </div>
-        <br>
-      <br>
 
-    </div>
-    <div class="copyright-card">
-      <!-- Cloud Technical Residency -->
-      <h6>© 2018 <a href="#">Vysit LLP</a>.</h6>
-    </div>
+        <div class="about-card">
+          <div v-if="landmark_response">
+          <h5>Nerd stats</h5>
+        </div>
 
-  <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
-  <script>
-    // Initialize Firebase
-    var config = {
-      apiKey: "AIzaSyBkjv3I3fuLzyvEmlwqZDV4LFiQTmo_lC0",
-      authDomain: "esoteric-source-220418.firebaseapp.com",
-      databaseURL: "https://esoteric-source-220418.firebaseio.com",
-      projectId: "esoteric-source-220418",
-      storageBucket: "esoteric-source-220418.appspot.com",
-      messagingSenderId: "55437313763"
-    };
-    firebase.initializeApp(config);
-  </script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWZ2IDESUpL3pF9dx73FO_vOy3JF7a2AY"></script>
-  <script type="text/javascript" src="js/apiCaller.js"></script>
-  <script>
-  $(document).ready(function(){
-    $('.fixed-action-btn').floatingActionButton();
-  });
-  $(document).ready(function(){
-    $('select').formSelect();
-  });
-</script>
-</body>
+        <div class="col s12 m12 l12">
+          <!-- <div class="card"> -->
+                <div class="col s12">
+                  <div id="emotion_state" style="width:100%;height:400px;">
+                    <div class="row">
+                      <div class = "col s6 m6 l6">
+                        <div class="card" style="padding-left: 16px;">
+                          <p>Emotions identified:</p>
+                            <div class="chip" v-for="item in emotions">
+                              {{item[0]}}:&nbsp; {{item[1]}}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class = "col s6 m6 l6">
+                          <div class="card" style="padding-left: 16px;">
+                            <p>Text Annotations:</p>
+                              <!-- <div v-if="text_detection_response"> -->
+                              <div class="chip blue" v-for="item in text_detection_response.responses[0].textAnnotations">
+                                <div style="color:white;">{{item.description}}</div>
+                                <!-- <i class="close material-icons">close</i> -->
+                              </div>
+                            <!-- </div> -->
+                            </div>
+                          </div>
+
+                          <div class = "col s6 m6 l6">
+                            <div class="card" style="padding-left: 16px;">
+                              <p>Objects identified:</p>
+                                <!-- <div v-if="text_detection_response"> -->
+                                <div class="chip red" v-for="item in object_detection_response.responses[0].localizedObjectAnnotations">
+                                  <div style="color:white;">{{item.name}}:&nbsp; {{item.score}}</div>
+                                  <!-- <i class="close material-icons">close</i> -->
+                                </div>
+                              <!-- </div> -->
+                              </div>
+                            </div>
+
+                      </div>
+                    </div>
+                  </div>
+          <!-- </div> -->
+          <button style="background: white; color: #2196F3;" type="button" class="btn btn-secondary" @click="getNerdStats">Get nerd stats</button>
+        </div>
+        <!-- <button style="background: white; color: #2196F3;" type="button" class="btn btn-secondary" @click="getMemories">SHOW PAST LOCATIONS</button> -->
+      </div>
+      </div>
+
+      <div class="copyright-card">
+        <!-- Cloud Technical Residency -->
+        <h6>© 2018 <a href="#">Vysit LLP</a>.</h6>
+      </div>
+
+      <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
+      <script>
+        // Initialize Firebase
+        var config = {
+          apiKey: "AIzaSyBkjv3I3fuLzyvEmlwqZDV4LFiQTmo_lC0",
+          authDomain: "esoteric-source-220418.firebaseapp.com",
+          databaseURL: "https://esoteric-source-220418.firebaseio.com",
+          projectId: "esoteric-source-220418",
+          storageBucket: "esoteric-source-220418.appspot.com",
+          messagingSenderId: "55437313763"
+        };
+        firebase.initializeApp(config);
+      </script>
+      <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWZ2IDESUpL3pF9dx73FO_vOy3JF7a2AY"></script>
+      <!-- <script type="text/javascript" src="js/Map.js"></script> -->
+      <script type="text/javascript" src="js/apiCaller.js"></script>
+      <script>
+      $(document).ready(function(){
+        $('.fixed-action-btn').floatingActionButton();
+      });
+      $(document).ready(function(){
+        $('select').formSelect();
+      });
+      </script>
+    </body>
 </html>

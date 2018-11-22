@@ -52,6 +52,10 @@ h5 {
   width: 40%;
 }
 
+.main-label-panel {
+  font-size: 132px;
+}
+
 .api-descriptor {
   align-items: center;
   text-align: center;
