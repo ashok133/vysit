@@ -627,6 +627,11 @@ var apiCallerApp = new Vue({
 					.then (json => {
  						apiCallerApp.safe_search_response = json;
 						console.log(json);
+						apiCallerApp.violence_bool =false;
+						apiCallerApp.medical_bool = false
+						apiCallerApp.spoof_bool =false;
+						apiCallerApp.racy_bool =false;
+						apiCallerApp.adult_bool = false;
 						if (json.responses[0].safeSearchAnnotation.violence == "VERY_LIKELY" || json.responses[0].safeSearchAnnotation.violence == "POSSIBLE" || json.responses[0].safeSearchAnnotation.violence == "LIKELY") {
 							apiCallerApp.violence_bool = true;
 						}
